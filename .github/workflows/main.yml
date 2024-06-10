@@ -5,6 +5,17 @@ on:
     branches: [ main, master, develop]
   pull_request:
 
+
+inputs:
+  JAVA_VERSION:
+    description: 'Java version to use'
+    required: false
+    default: '17'
+  JAVA_DISTRIBUTION:
+    description: 'Java distribution to use'
+    required: false
+    default: 'temurin'
+
 jobs:
   test-backend: 
     runs-on: ubuntu-22.04
@@ -13,10 +24,10 @@ jobs:
       - uses: actions/checkout@v2.5.0
 
       #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          distribution: ${{ inputs.JAVA_DISTRIBUTION }}
+          java-version: ${{ inputs.JAVA_VERSION }}
 
       #finally build your app with the latest command
       - name: Build and test with Maven
