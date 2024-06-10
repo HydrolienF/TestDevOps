@@ -27,7 +27,9 @@ jobs:
       - name: Build and test with Maven
         run: |
           cd javaapp/simple-api/
-          mvn -ntp clean verify
+          # mvn -ntp clean verify
+          mvn -B verify sonar:sonar -Dsonar.projectKey=devops-2024 -Dsonar.organization=hydrotestorg -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
 
           # define job to build and publish docker image
 
