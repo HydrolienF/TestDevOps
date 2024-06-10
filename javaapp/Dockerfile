@@ -15,8 +15,8 @@ ENV MYAPP_HOME /opt/myapp
 WORKDIR $MYAPP_HOME
 COPY simple-api/pom.xml .
 COPY simple-api/src ./src
-RUN mvn dependency:go-offline
-RUN mvn package -DskipTests
+RUN mvn -ntp dependency:go-offline
+RUN mvn -ntp package -DskipTests
 
 # Run
 FROM amazoncorretto:17
