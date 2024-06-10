@@ -54,18 +54,18 @@ jobs:
           # Note: tags has to be all lower-case
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/javaapp:latest
           # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Build image and push database
         uses: docker/build-push-action@v3
         with:
           context: ./dbpgsql/
           tags: ${{secrets.DOCKERHUB_USERNAME}}/dbpgsql:latest
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Build image and push httpd
         uses: docker/build-push-action@v3
         with:
           context: ./httpserver/
           tags: ${{secrets.DOCKERHUB_USERNAME}}/httpserver:latest
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/master' }}
