@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+    database:
+        build: dbpgsql
+        container_name: dbpgsql
+        networks: [ app-network ]
+        # -v /home/hydrolien/cours/s10/devops/tp1/app/data/:/var/lib/postgresql/data
+        volumes: [ db-data:/var/lib/postgresql/data ]
+
+    backend:
+        build: javaapp
+        # container_name: javaapp
+        networks: [ app-network ]
+        depends_on: [ database ]
+
+    httpd:
+        build: httpserver
+        # countainer_name: httpserver
+        ports: [ 8888:80 ]
+        networks: [ app-network ]
+        depends_on: [ database, backend ]
+
+networks:
+    app-network: {}
+
+volumes:
+    db-data: {}
