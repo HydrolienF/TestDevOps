@@ -1,22 +1,16 @@
 name: Build and push docker image
 on:
   #to begin you want to launch this job in main and develop
-  push:
-    branches: [ main, master]
-  pull_request:
+
+  # launch on main or master only when test backend is completed
   workflow_run:
     workflows: ["Test backend"]
     types:
       - completed
-
-
-env:
-  JAVA_VERSION: '17'
-  JAVA_DISTRIBUTION: 'temurin'
+    branches: [ main, master ]
 
 jobs:
   build-and-push-docker-image:
-    needs: test-backend
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-22.04
 
