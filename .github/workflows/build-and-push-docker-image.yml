@@ -1,0 +1,53 @@
+name: Build and push docker image
+on:
+  #to begin you want to launch this job in main and develop
+  push:
+    branches: [ main, master]
+  pull_request:
+  workflow_run:
+    workflows: ["Test backend"]
+    types:
+      - completed
+
+
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+
+jobs:
+  build-and-push-docker-image:
+    needs: test-backend
+    # run only when code is compiling and tests are passing
+    runs-on: ubuntu-22.04
+
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./javaapp/
+          # Note: tags has to be all lower-case
+          tags:  ${{secrets.DOCKERHUB_USERNAME}}/javaapp:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/master' }}
+
+      - name: Build image and push database
+        uses: docker/build-push-action@v3
+        with:
+          context: ./dbpgsql/
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dbpgsql:latest
+          push: ${{ github.ref == 'refs/heads/master' }}
+
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v3
+        with:
+          context: ./httpserver/
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/httpserver:latest
+          push: ${{ github.ref == 'refs/heads/master' }}
