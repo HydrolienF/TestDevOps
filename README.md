@@ -19,3 +19,4 @@ Inspecter le réseau interne :
 
 Launch docker compose with `docker compose up`
 
+Connect to could VM `ssh -i id_rsa centos@emilien.raveneau.takima.cloud`. Need key to be saved in id_rsa.
