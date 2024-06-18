@@ -18,3 +18,5 @@ Inspecter le réseau interne :
 `docker run --name httpserver -p 8888:80 --network app-network hydrolien/httpserver`
 
 Launch docker compose with `docker compose up`
+
+Connect to could VM `ssh -i id_rsa centos@emilien.raveneau.takima.cloud`. Need key to be saved in id_rsa.
